@@ -133,7 +133,7 @@ const handleAction = (button) => {
       setInputFieldValue(secondNum)
     }
   }
-
+  forDebuggingShowValues()
   console.log(firstNum, secondNum, operator)
 }
 
@@ -143,6 +143,16 @@ const setInputFieldValue = (value) => {
   if (String(value).length > 7) {
     inputField.style.fontSize = String(45 - String(value).length * 1.5) + 'px'
   }
+}
+
+const forDebuggingShowValues = () => {
+  const firstNumberDebug = document.querySelector('.firstNumber')
+  const secondNumberDebug = document.querySelector('.secondNumber')
+  const operatorDebug = document.querySelector('.operator')
+
+  firstNumberDebug.innerHTML = 'First number: ' + firstNum
+  secondNumberDebug.innerHTML = 'Second number: ' + secondNum
+  operatorDebug.innerHTML = 'Operator: ' + operator
 }
 
 initializeCalculatorHTML()

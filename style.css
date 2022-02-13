@@ -4,6 +4,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 table {
@@ -27,6 +28,7 @@ td {
   box-shadow: 9px 13px 69px 0px rgba(0, 0, 0, 0.54);
   -webkit-box-shadow: 9px 13px 69px 0px rgba(0, 0, 0, 0.54);
   -moz-box-shadow: 9px 13px 69px 0px rgba(0, 0, 0, 0.54);
+  margin-bottom: 50px;
 }
 
 .calculatorElement {

@@ -105,25 +105,27 @@ const handleAction = (button) => {
   let result = 0
 
   if (value === '±') {
-    if (activeNumber == 'first') {
-      if (inputField.value == lastResult) {
-        firstNum = lastResult
-      }
+    if (!(firstNum != '' && !isOperatorNull() && secondNum == '')) {
+      if (activeNumber == 'first') {
+        if (inputField.value == lastResult) {
+          firstNum = lastResult
+        }
 
-      if (firstNum.charAt(0) == '-') {
-        firstNum = firstNum.substring(1)
-        setInputFieldValue(firstNum)
+        if (firstNum.charAt(0) == '-') {
+          firstNum = firstNum.substring(1)
+          setInputFieldValue(firstNum)
+        } else {
+          firstNum = '-' + firstNum
+          setInputFieldValue(firstNum)
+        }
       } else {
-        firstNum = '-' + firstNum
-        setInputFieldValue(firstNum)
-      }
-    } else {
-      if (secondNum.charAt(0) == '-') {
-        secondNum = secondNum.substring(1)
-        setInputFieldValue(secondNum)
-      } else {
-        secondNum = '-' + secondNum
-        setInputFieldValue(secondNum)
+        if (secondNum.charAt(0) == '-') {
+          secondNum = secondNum.substring(1)
+          setInputFieldValue(secondNum)
+        } else {
+          secondNum = '-' + secondNum
+          setInputFieldValue(secondNum)
+        }
       }
     }
   }

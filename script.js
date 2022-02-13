@@ -1,6 +1,6 @@
 const initializeCalculatorHTML = () => {
   const calculatorDiv = document.querySelector('.calculator')
-  const calculatorProperties = [
+  const elements = [
     { name: 'AC', color: 'rgb(57,55,59)' },
     { name: '±', color: 'rgb(57,55,59)' },
     { name: '%', color: 'rgb(57,55,59)' },
@@ -32,7 +32,7 @@ const initializeCalculatorHTML = () => {
     if (i != 0 && i != 5) {
       for (let j = 0; j < 4; j++) {
         const tableData = document.createElement('td')
-        const corresprondingSymbol = calculatorProperties.pop()
+        const corresprondingSymbol = elements.pop()
         tableData.classList.add(corresprondingSymbol.name, 'calculatorElement')
         tableData.innerHTML = corresprondingSymbol.name
         tableData.style.backgroundColor = corresprondingSymbol.color
@@ -46,7 +46,7 @@ const initializeCalculatorHTML = () => {
     } else if (i == 5) {
       for (let j = 0; j < 3; j++) {
         const tableData = document.createElement('td')
-        const corresprondingSymbol = calculatorProperties.pop()
+        const corresprondingSymbol = elements.pop()
         tableData.classList.add(corresprondingSymbol.name, 'calculatorElement')
         tableData.innerHTML = corresprondingSymbol.name
         tableData.style.backgroundColor = corresprondingSymbol.color

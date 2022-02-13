@@ -101,6 +101,7 @@ const handleClick = () => {
 const handleAction = (button) => {
   const value = button.innerHTML
   let result = 0
+  // If there are two eligible numbers && operator && '=' pressed
   if (readyForCalc() && value === '=') {
     const firstNumberAsNumber = isComma(firstNum)
       ? parseFloat(firstNum.replace(',', '.'))
@@ -108,7 +109,6 @@ const handleAction = (button) => {
     const secondNumberAsNumber = isComma(secondNum)
       ? parseFloat(secondNum.replace(',', '.'))
       : parseInt(secondNum)
-    console.log(firstNumberAsNumber, secondNumberAsNumber)
 
     switch (operator) {
       case '+':
@@ -117,7 +117,7 @@ const handleAction = (button) => {
         setInputFieldValue(String(result).replace('.', ','))
         activeNumber = 'first'
         secondNum = ''
-        operator = '+'
+        operator = ''
         lastResult = String(result).replace('.', ',')
         break
       case '-':
@@ -130,7 +130,6 @@ const handleAction = (button) => {
         lastResult = String(result).replace('.', ',')
         break
       case '÷':
-        console.log(secondNumberAsNumber)
         if (secondNumberAsNumber != 0) {
           result =
             Math.round((firstNumberAsNumber / secondNumberAsNumber) * 100000) /
@@ -148,6 +147,72 @@ const handleAction = (button) => {
           secondNum = ''
           operator = ''
         }
+        break
+      case '×':
+        result = firstNumberAsNumber * secondNumberAsNumber
+        firstNum = ''
+        setInputFieldValue(String(result).replace('.', ','))
+        activeNumber = 'first'
+        secondNum = ''
+        operator = ''
+        lastResult = String(result).replace('.', ',')
+    }
+  }
+  // If there are two eligible numbers && operator && another operator pressed
+  else if (readyForCalc() && isOperator(value)) {
+    const firstNumberAsNumber = isComma(firstNum)
+      ? parseFloat(firstNum.replace(',', '.'))
+      : parseInt(firstNum)
+    const secondNumberAsNumber = isComma(secondNum)
+      ? parseFloat(secondNum.replace(',', '.'))
+      : parseInt(secondNum)
+
+    switch (operator) {
+      case '+':
+        result = firstNumberAsNumber + secondNumberAsNumber
+        firstNum = String(result).replace('.', ',')
+        setInputFieldValue(String(result).replace('.', ','))
+        activeNumber = 'second'
+        secondNum = ''
+        operator = String(value)
+        lastResult = String(result).replace('.', ',')
+        break
+      case '-':
+        result = firstNumberAsNumber - secondNumberAsNumber
+        firstNum = String(result).replace('.', ',')
+        setInputFieldValue(String(result).replace('.', ','))
+        activeNumber = 'first'
+        secondNum = ''
+        operator = String(value)
+        lastResult = String(result).replace('.', ',')
+        break
+      case '÷':
+        if (secondNumberAsNumber != 0) {
+          result =
+            Math.round((firstNumberAsNumber / secondNumberAsNumber) * 100000) /
+            100000
+          firstNum = String(result).replace('.', ',')
+          setInputFieldValue(String(result).replace('.', ','))
+          activeNumber = 'first'
+          secondNum = ''
+          operator = String(value)
+          lastResult = String(result).replace('.', ',')
+        } else {
+          firstNum = ''
+          setInputFieldValue('Dividing by 0...')
+          activeNumber = 'first'
+          secondNum = ''
+          operator = ''
+        }
+        break
+      case '×':
+        result = firstNumberAsNumber * secondNumberAsNumber
+        firstNum = String(result).replace('.', ',')
+        setInputFieldValue(String(result).replace('.', ','))
+        activeNumber = 'first'
+        secondNum = ''
+        operator = String(value)
+        lastResult = String(result).replace('.', ',')
     }
   }
   //Delete all inputs
@@ -157,8 +222,9 @@ const handleAction = (button) => {
     operator = ''
     setInputFieldValue(0)
   } else if (value === '%' && activeNumber == 'first') {
+    const numberPercent = parseFloat(firstNum.replace(',', '.') / 100)
   }
-  //Handle first number when operator is not given
+  //Handle first number when operator is not yet given
   else if (
     isOperatorNull() &&
     isNumberOrComma(value) &&

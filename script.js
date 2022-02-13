@@ -1,9 +1,11 @@
 let firstNum = '',
   secondNum = '',
-  operator = ''
+  operator = '',
+  activeNumber = 'first'
 const symbols = ['0123456789,', '÷+=-×', 'AC±%']
 
-const isOperatorNull = operator != ''
+const isComma = (string) => string.includes(',')
+const isOperatorNull = () => operator == ''
 const isOperator = (string) => symbols[1].includes(string)
 const isNumberOrComma = (string) => symbols[0].includes(string)
 
@@ -97,6 +99,7 @@ const handleClick = () => {
 const handleAction = (button) => {
   const value = button.innerHTML
 
+  //Delete all inputs
   if (value === 'AC') {
     firstNum = ''
     secondNum = ''
@@ -104,26 +107,40 @@ const handleAction = (button) => {
     setInputFieldValue(0)
   }
   //Handle first number when operator is not given
-  if (
-    !isOperatorNull &&
+  else if (
+    isOperatorNull() &&
     isNumberOrComma(value) &&
     String(firstNum).length <= 8
   ) {
-    firstNum += value
-    setInputFieldValue(firstNum)
-    console.log('Number oder Komma und kein operator')
+    if (value == ',' && isComma(firstNum)) {
+    } else {
+      firstNum += value
+      setInputFieldValue(firstNum)
+    }
   }
   //Handle operator
-  else if (firstNum != '' && isOperator(value)) {
-    console.log('dies ist ein operator')
+  else if (firstNum != '' && isOperator(value) && isOperatorNull()) {
+    operator = value
+    activeNumber = 'second'
+  } else if (
+    !isOperatorNull() &&
+    String(secondNum).length <= 8 &&
+    isNumberOrComma(value)
+  ) {
+    if (value == ',' && isComma(secondNum)) {
+    } else {
+      secondNum += value
+      setInputFieldValue(secondNum)
+    }
   }
+
+  console.log(firstNum, secondNum, operator)
 }
 
 const setInputFieldValue = (value) => {
   const inputField = document.querySelector('.inputElement')
   inputField.value = value
   if (String(value).length > 7) {
-    console.log(String(45 - value))
     inputField.style.fontSize = String(45 - String(value).length * 1.5) + 'px'
   }
 }

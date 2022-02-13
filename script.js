@@ -104,9 +104,13 @@ const handleAction = (button) => {
   const value = button.innerHTML
   let result = 0
 
+  // Handle change of sign
   if (value === '±') {
     if (!(firstNum != '' && !isOperatorNull() && secondNum == '')) {
-      if (activeNumber == 'first') {
+      if (
+        activeNumber == 'first' &&
+        (firstNum != '' || inputField.value == lastResult)
+      ) {
         if (inputField.value == lastResult) {
           firstNum = lastResult
         }
@@ -118,7 +122,7 @@ const handleAction = (button) => {
           firstNum = '-' + firstNum
           setInputFieldValue(firstNum)
         }
-      } else {
+      } else if (activeNumber == 'second' && secondNum != '') {
         if (secondNum.charAt(0) == '-') {
           secondNum = secondNum.substring(1)
           setInputFieldValue(secondNum)
@@ -126,6 +130,28 @@ const handleAction = (button) => {
           secondNum = '-' + secondNum
           setInputFieldValue(secondNum)
         }
+      }
+    }
+  }
+  // Handle percent
+  else if (value === '%') {
+    if (!(firstNum != '' && !isOperatorNull() && secondNum == '')) {
+      if (activeNumber == 'first') {
+        if (inputField.value == lastResult) {
+          firstNum = lastResult
+        }
+
+        firstNum = String(
+          Math.round((parseFloat(firstNum.replace(',', '.')) / 100) * 100000) /
+            100000,
+        ).replace('.', ',')
+        setInputFieldValue(firstNum)
+      } else {
+        secondNum = String(
+          Math.round((parseFloat(secondNum.replace(',', '.')) / 100) * 100000) /
+            100000,
+        ).replace('.', ',')
+        setInputFieldValue(secondNum)
       }
     }
   }
@@ -270,14 +296,15 @@ const handleAction = (button) => {
   else if (
     inputField.value == lastResult &&
     isOperator(value) &&
-    isOperatorNull()
+    isOperatorNull() &&
+    value != '='
   ) {
     firstNum = lastResult
     operator = value
     activeNumber = 'second'
   }
   //Handle operator after first number is input
-  else if (firstNum != '' && isOperator(value)) {
+  else if (firstNum != '' && isOperator(value) && value != '=') {
     operator = value
     activeNumber = 'second'
   }
@@ -293,8 +320,6 @@ const handleAction = (button) => {
       setInputFieldValue(secondNum)
     }
   }
-
-  forDebuggingShowValues()
 }
 
 const setInputFieldValue = (value) => {
@@ -305,18 +330,6 @@ const setInputFieldValue = (value) => {
   } else {
     inputField.style.fontSize = '45px'
   }
-}
-
-const forDebuggingShowValues = () => {
-  const firstNumberDebug = document.querySelector('.firstNumber')
-  const secondNumberDebug = document.querySelector('.secondNumber')
-  const operatorDebug = document.querySelector('.operator')
-  const activeNumberDebug = document.querySelector('.activeNumber')
-
-  firstNumberDebug.innerHTML = 'First number: ' + firstNum
-  secondNumberDebug.innerHTML = 'Second number: ' + secondNum
-  operatorDebug.innerHTML = 'Operator: ' + operator
-  activeNumberDebug.innerHTML = 'Active: ' + activeNumber
 }
 
 initializeCalculatorHTML()

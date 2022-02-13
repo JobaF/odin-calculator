@@ -59,7 +59,29 @@ const initializeCalculatorHTML = () => {
       }
     }
   }
-  const numberField = document.createElement('')
+}
+
+const handleClick = () => {
+  const allButtons = document.querySelectorAll('.calculatorElement')
+  const symbols = ['0123456789,', '÷+=-×', 'AC±%']
+  allButtons.forEach((button) => {
+    const innerHTML = button.innerHTML
+    const initialBackground = button.style.backgroundColor
+
+    button.addEventListener('mousedown', () => {
+      if (symbols[0].includes(innerHTML)) {
+        button.style.backgroundColor = 'rgb(173,172,174)'
+      } else if (symbols[1].includes(innerHTML)) {
+        button.style.backgroundColor = 'rgb(185,119,34)'
+      } else if (symbols[2].includes(innerHTML)) {
+        button.style.backgroundColor = 'rgb(118,117,120)'
+      }
+    })
+    document.addEventListener('mouseup', () => {
+      button.style.backgroundColor = initialBackground
+    })
+  })
 }
 
 initializeCalculatorHTML()
+handleClick()

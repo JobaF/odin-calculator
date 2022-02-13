@@ -37,6 +37,7 @@ td {
   box-sizing: border-box;
   border-width: thin;
   outline: 0.1px rgb(78, 77, 80) solid;
+  user-select: none;
 }
 
 .row {

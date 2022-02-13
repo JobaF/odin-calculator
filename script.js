@@ -1,13 +1,15 @@
 let firstNum = '',
   secondNum = '',
   operator = '',
-  activeNumber = 'first'
+  activeNumber = 'first',
+  lastResult = ''
 const symbols = ['0123456789,', '÷+=-×', 'AC±%']
 
 const isComma = (string) => string.includes(',')
 const isOperatorNull = () => operator == ''
 const isOperator = (string) => symbols[1].includes(string)
 const isNumberOrComma = (string) => symbols[0].includes(string)
+const readyForCalc = () => operator != '' && firstNum != '' && secondNum != ''
 
 const initializeCalculatorHTML = () => {
   const calculatorDiv = document.querySelector('.calculator')
@@ -98,13 +100,56 @@ const handleClick = () => {
 
 const handleAction = (button) => {
   const value = button.innerHTML
+  let result = 0
+  if (readyForCalc() && value === '=') {
+    const firstNumberAsNumber = isComma(firstNum)
+      ? parseFloat(firstNum.replace(',', '.'))
+      : parseInt(firstNum)
+    const secondNumberAsNumber = isComma(secondNum)
+      ? parseFloat(secondNum.replace(',', '.'))
+      : parseInt(secondNum)
+    console.log(firstNumberAsNumber, secondNumberAsNumber)
 
+    switch (operator) {
+      case '+':
+        result = firstNumberAsNumber + secondNumberAsNumber
+        firstNum = ''
+        setInputFieldValue(String(result).replace('.', ','))
+        activeNumber = 'first'
+        secondNum = ''
+        operator = '+'
+        lastResult = String(result).replace('.', ',')
+        break
+      case '-':
+        result = firstNumberAsNumber - secondNumberAsNumber
+        firstNum = ''
+        setInputFieldValue(String(result).replace('.', ','))
+        activeNumber = 'first'
+        secondNum = ''
+        operator = ''
+        lastResult = String(result).replace('.', ',')
+        break
+      case '÷':
+        if (secondNumberAsNumber != 0) {
+          result =
+            Math.round((firstNumberAsNumber / secondNumberAsNumber) * 100000) /
+            100000
+          firstNum = ''
+          setInputFieldValue(String(result).replace('.', ','))
+          activeNumber = 'first'
+          secondNum = ''
+          operator = ''
+          lastResult = String(result).replace('.', ',')
+        }
+    }
+  }
   //Delete all inputs
-  if (value === 'AC') {
+  else if (value === 'AC') {
     firstNum = ''
     secondNum = ''
     operator = ''
     setInputFieldValue(0)
+  } else if (value === '%' && activeNumber == 'first') {
   }
   //Handle first number when operator is not given
   else if (
@@ -134,7 +179,6 @@ const handleAction = (button) => {
     }
   }
   forDebuggingShowValues()
-  console.log(firstNum, secondNum, operator)
 }
 
 const setInputFieldValue = (value) => {
@@ -149,10 +193,12 @@ const forDebuggingShowValues = () => {
   const firstNumberDebug = document.querySelector('.firstNumber')
   const secondNumberDebug = document.querySelector('.secondNumber')
   const operatorDebug = document.querySelector('.operator')
+  const activeNumberDebug = document.querySelector('.activeNumber')
 
   firstNumberDebug.innerHTML = 'First number: ' + firstNum
   secondNumberDebug.innerHTML = 'Second number: ' + secondNum
   operatorDebug.innerHTML = 'Operator: ' + operator
+  activeNumberDebug.innerHTML = 'Active: ' + activeNumber
 }
 
 initializeCalculatorHTML()

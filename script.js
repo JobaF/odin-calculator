@@ -130,6 +130,7 @@ const handleAction = (button) => {
         lastResult = String(result).replace('.', ',')
         break
       case '÷':
+        console.log(secondNumberAsNumber)
         if (secondNumberAsNumber != 0) {
           result =
             Math.round((firstNumberAsNumber / secondNumberAsNumber) * 100000) /
@@ -140,6 +141,12 @@ const handleAction = (button) => {
           secondNum = ''
           operator = ''
           lastResult = String(result).replace('.', ',')
+        } else {
+          firstNum = ''
+          setInputFieldValue('Dividing by 0...')
+          activeNumber = 'first'
+          secondNum = ''
+          operator = ''
         }
     }
   }
@@ -186,6 +193,8 @@ const setInputFieldValue = (value) => {
   inputField.value = value
   if (String(value).length > 7) {
     inputField.style.fontSize = String(45 - String(value).length * 1.5) + 'px'
+  } else {
+    inputField.style.fontSize = '45px'
   }
 }
 

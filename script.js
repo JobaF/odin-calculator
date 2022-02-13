@@ -1,3 +1,12 @@
+let firstNum = '',
+  secondNum = '',
+  operator = ''
+const symbols = ['0123456789,', '÷+=-×', 'AC±%']
+
+const isOperatorNull = operator != ''
+const isOperator = (string) => symbols[1].includes(string)
+const isNumberOrComma = (string) => symbols[0].includes(string)
+
 const initializeCalculatorHTML = () => {
   const calculatorDiv = document.querySelector('.calculator')
   const elements = [
@@ -64,12 +73,13 @@ const initializeCalculatorHTML = () => {
 
 const handleClick = () => {
   const allButtons = document.querySelectorAll('.calculatorElement')
-  const symbols = ['0123456789,', '÷+=-×', 'AC±%']
   allButtons.forEach((button) => {
     const innerHTML = button.innerHTML
     const initialBackground = button.style.backgroundColor
 
     button.addEventListener('mousedown', () => {
+      handleAction(button)
+
       if (symbols[0].includes(innerHTML)) {
         button.style.backgroundColor = 'rgb(173,172,174)'
       } else if (symbols[1].includes(innerHTML)) {
@@ -82,6 +92,40 @@ const handleClick = () => {
       button.style.backgroundColor = initialBackground
     })
   })
+}
+
+const handleAction = (button) => {
+  const value = button.innerHTML
+
+  if (value === 'AC') {
+    firstNum = ''
+    secondNum = ''
+    operator = ''
+    setInputFieldValue(0)
+  }
+  //Handle first number when operator is not given
+  if (
+    !isOperatorNull &&
+    isNumberOrComma(value) &&
+    String(firstNum).length <= 8
+  ) {
+    firstNum += value
+    setInputFieldValue(firstNum)
+    console.log('Number oder Komma und kein operator')
+  }
+  //Handle operator
+  else if (firstNum != '' && isOperator(value)) {
+    console.log('dies ist ein operator')
+  }
+}
+
+const setInputFieldValue = (value) => {
+  const inputField = document.querySelector('.inputElement')
+  inputField.value = value
+  if (String(value).length > 7) {
+    console.log(String(45 - value))
+    inputField.style.fontSize = String(45 - String(value).length * 1.5) + 'px'
+  }
 }
 
 initializeCalculatorHTML()

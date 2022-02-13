@@ -99,6 +99,8 @@ const handleClick = () => {
 }
 
 const handleAction = (button) => {
+  const inputField = document.querySelector('.inputElement')
+
   const value = button.innerHTML
   let result = 0
   // If there are two eligible numbers && operator && '=' pressed
@@ -149,7 +151,9 @@ const handleAction = (button) => {
         }
         break
       case '×':
-        result = firstNumberAsNumber * secondNumberAsNumber
+        result =
+          Math.round(firstNumberAsNumber * secondNumberAsNumber * 100000) /
+          100000
         firstNum = ''
         setInputFieldValue(String(result).replace('.', ','))
         activeNumber = 'first'
@@ -224,7 +228,7 @@ const handleAction = (button) => {
   } else if (value === '%' && activeNumber == 'first') {
     const numberPercent = parseFloat(firstNum.replace(',', '.') / 100)
   }
-  //Handle first number when operator is not yet given
+  //Handle first number
   else if (
     isOperatorNull() &&
     isNumberOrComma(value) &&
@@ -236,11 +240,23 @@ const handleAction = (button) => {
       setInputFieldValue(firstNum)
     }
   }
-  //Handle operator
+  // Handle operator click after calculation
+  else if (
+    inputField.value == lastResult &&
+    isOperator(value) &&
+    isOperatorNull()
+  ) {
+    firstNum = lastResult
+    operator = value
+    activeNumber = 'second'
+  }
+  //Handle operator after first number is input
   else if (firstNum != '' && isOperator(value) && isOperatorNull()) {
     operator = value
     activeNumber = 'second'
-  } else if (
+  }
+  //Handle second number
+  else if (
     !isOperatorNull() &&
     String(secondNum).length <= 8 &&
     isNumberOrComma(value)
@@ -251,6 +267,7 @@ const handleAction = (button) => {
       setInputFieldValue(secondNum)
     }
   }
+
   forDebuggingShowValues()
 }
 

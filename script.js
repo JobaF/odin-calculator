@@ -43,6 +43,7 @@ const initializeCalculatorHTML = () => {
     } else if (i == 0) {
       const tableData = document.createElement('input')
       tableData.classList.add('inputElement')
+      tableData.value = 0
       tableData.style.backgroundColor = 'rgb(78,77,80)'
       tableRow.appendChild(tableData)
     } else if (i == 5) {

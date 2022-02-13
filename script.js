@@ -103,8 +103,32 @@ const handleAction = (button) => {
 
   const value = button.innerHTML
   let result = 0
+
+  if (value === '±') {
+    if (activeNumber == 'first') {
+      if (inputField.value == lastResult) {
+        firstNum = lastResult
+      }
+
+      if (firstNum.charAt(0) == '-') {
+        firstNum = firstNum.substring(1)
+        setInputFieldValue(firstNum)
+      } else {
+        firstNum = '-' + firstNum
+        setInputFieldValue(firstNum)
+      }
+    } else {
+      if (secondNum.charAt(0) == '-') {
+        secondNum = secondNum.substring(1)
+        setInputFieldValue(secondNum)
+      } else {
+        secondNum = '-' + secondNum
+        setInputFieldValue(secondNum)
+      }
+    }
+  }
   // If there are two eligible numbers && operator && '=' pressed
-  if (readyForCalc() && value === '=') {
+  else if (readyForCalc() && value === '=') {
     const firstNumberAsNumber = isComma(firstNum)
       ? parseFloat(firstNum.replace(',', '.'))
       : parseInt(firstNum)
@@ -251,7 +275,7 @@ const handleAction = (button) => {
     activeNumber = 'second'
   }
   //Handle operator after first number is input
-  else if (firstNum != '' && isOperator(value) && isOperatorNull()) {
+  else if (firstNum != '' && isOperator(value)) {
     operator = value
     activeNumber = 'second'
   }

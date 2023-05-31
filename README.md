@@ -1,8 +1,5 @@
 # Apple-style Calculator 
 
-Demo at: 
-<h2>About the project</h2>
-
 👉 <a href='https://jobaf.github.io/odin-calculator/'>Live Demo</a>
 
 <h3>Build with:</h3>
